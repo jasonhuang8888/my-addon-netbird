@@ -5,7 +5,9 @@ FROM netbirdio/netbird:0.60.2 as netbird-container
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
-RUN apk add --no-cache nftables=1.1.3-r0
+# RUN apk add --no-cache nftables=1.1.3-r0
+# 永遠鎖版本，可能會因 HAOS base image 更新 → 可能沒有 1.1.3-r0 → 失敗
+RUN apk add --no-cache nftables
 
 # Copy root filesystem
 COPY rootfs /
