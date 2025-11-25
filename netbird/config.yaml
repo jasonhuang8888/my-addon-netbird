@@ -1,9 +1,9 @@
 ---
-name: NetBird
+name: NetBird (Jason Custom)
 version: v0.60.2
 slug: netbird_jason_custom
-description: Connect your devices into a single secure private WireGuard®-based mesh network.
-url: https://github.com/netbirdio/addon-netbird
+description: Custom NetBird addon using Docker tag v0.60.2 with startup fix
+url: https://github.com/jasonhuang8888/my-addon-netbird
 startup: application
 panel_icon: mdi:vpn
 init: false
