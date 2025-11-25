@@ -1,10 +1,10 @@
 ---
 name: NetBird
 version: v0.60.2
-slug: netbird
+slug: netbird_jason_custom
 description: Connect your devices into a single secure private WireGuard®-based mesh network.
 url: https://github.com/netbirdio/addon-netbird
-startup: services
+startup: application
 panel_icon: mdi:vpn
 init: false
 arch:
