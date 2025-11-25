@@ -1,5 +1,51 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
+
+
+bashio::log.info "NetBird Client – Jason Custom Startup Script"
+
+# ===============================================================
+# 1. Wait for HAOS network to be ready
+# ===============================================================
+bashio::log.info "Waiting for network interface (max 30s)..."
+for i in $(seq 1 30); do
+    if ip route | grep default >/dev/null 2>&1; then
+        bashio::log.info "Network interface ready."
+        break
+    fi
+    sleep 1
+done
+
+# ===============================================================
+# 2. Wait for DNS to resolve correctly
+# ===============================================================
+bashio::log.info "Checking DNS resolution (max 30s)..."
+for i in $(seq 1 30); do
+    if ping -c1 -W1 google.com >/dev/null 2>&1; then
+        bashio::log.info "DNS OK."
+        break
+    fi
+    sleep 1
+done
+
+# ===============================================================
+# 3. Optional: Wait for NetBird Management server reachable
+# ===============================================================
+MANAGEMENT_URL="$(bashio::config 'management_url')"
+if [ -n "$MANAGEMENT_URL" ]; then
+    HOST=$(echo "$MANAGEMENT_URL" | awk -F[/:] '{print $4}')
+    bashio::log.info "Checking NetBird management server: $HOST"
+
+    for i in $(seq 1 20); do
+        if ping -c1 -W1 "$HOST" >/dev/null 2>&1; then
+            bashio::log.info "NetBird management server reachable."
+            break
+        fi
+        sleep 1
+    done
+fi
+
+
 # ==============================================================================
 # Home Assistant Community Add-on: NetBird Client
 # Runs NetBird Client
