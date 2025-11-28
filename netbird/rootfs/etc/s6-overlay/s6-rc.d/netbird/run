@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 
 # 等待 HAOS network/system 完整啟動
-bashio::log.info "~~!! Waiting extra 30 seconds for HAOS to stabilize..."
+bashio::log.info "~~!! v0.59.12 Waiting extra 30 seconds for HAOS to stabilize..."
 sleep 30
 
 bashio::log.info "NetBird Client – Jason Custom Startup Script"
@@ -16,7 +16,7 @@ for i in $(seq 1 30); do
         bashio::log.info "Network interface ready."
         break
     fi
-    sleep 5
+    sleep 1
 done
 
 # ===============================================================
@@ -28,7 +28,7 @@ for i in $(seq 1 30); do
         bashio::log.info "DNS OK."
         break
     fi
-    sleep 5
+    sleep 1
 done
 
 # ===============================================================
@@ -44,7 +44,7 @@ if [ -n "$MANAGEMENT_URL" ]; then
             bashio::log.info "NetBird management server reachable."
             break
         fi
-        sleep 5
+        sleep 1
     done
 fi
 
@@ -140,6 +140,42 @@ CONTENT=$(cat /etc/resolv.conf)
 echo '# systemd-resolved' > /etc/resolv.conf
 echo "$CONTENT" >> /etc/resolv.conf
 
+
+# ---------------------------------------------------------------
+# 顯示 Add-on 版本（config.yaml）
+ADDON_VERSION=$(bashio::addon.version)
+bashio::log.info "Add-on Version (config.yaml): ${ADDON_VERSION}"
+
+# 顯示 Docker image 名稱
+DOCKER_IMAGE=$(bashio::addon.image)
+bashio::log.info "Docker Image: ${DOCKER_IMAGE}"
+
+# 顯示 NetBird 二進位版本
+NETBIRD_BIN_VERSION=$(netbird version)
+bashio::log.info "NetBird Binary Version: ${NETBIRD_BIN_VERSION}"
+
+# 顯示 NetBird 介面 wt0 IP（若已建立）
+WT0_IP=$(ip -o -4 addr show wt0 2>/dev/null | awk '{print $4}')
+bashio::log.info "NetBird wt0 IP: ${WT0_IP:-not ready yet}"
+
+# 顯示 netbird up 的參數
 bashio::log.info "Starting NetBird Client..."
-bashio::log.info "netbird up " "${options[@]}"
+# bashio::log.info "netbird up " "${options[@]}"
+bashio::log.info "netbird up ${options[*]}"
+
+# 運行 netbird
 netbird up "${options[@]}"
+
+sleep 2
+
+# 檢查 Peer 註冊狀態
+PEER_ID=$(netbird status 2>/dev/null | grep "Peer ID" | awk -F': ' '{print $2}')
+if [ -n "$PEER_ID" ]; then
+    bashio::log.info "NetBird Peer Registered Successfully: ${PEER_ID}"
+else
+    bashio::log.warning "NetBird Peer NOT registered yet!"
+fi
+
+# 顯示載入的 NetBird Routes
+bashio::log.info "NetBird Routes Loaded:"
+netbird route list || bashio::log.warning "Unable to fetch route list."
