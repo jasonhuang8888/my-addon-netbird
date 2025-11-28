@@ -1,6 +1,6 @@
 ---
 name: NetBird (Jason Custom)
-version: "v0.60.3-fix2"
+version: "v0.60.3-fix3"
 slug: netbird_jason_custom
 description: 自訂 NetBird addon using Docker tag v0.60.3 (顯示啟動完整資訊)
 url: https://github.com/jasonhuang8888/my-addon-netbird
