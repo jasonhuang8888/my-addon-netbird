@@ -160,22 +160,8 @@ bashio::log.info "NetBird wt0 IP: ${WT0_IP:-not ready yet}"
 
 # 顯示 netbird up 的參數
 bashio::log.info "Starting NetBird Client..."
-# bashio::log.info "netbird up " "${options[@]}"
-bashio::log.info "netbird up ${options[*]}"
+bashio::log.info "netbird up " "${options[@]}"
 
 # 運行 netbird
 netbird up "${options[@]}"
 
-sleep 2
-
-# 檢查 Peer 註冊狀態
-PEER_ID=$(netbird status 2>/dev/null | grep "Peer ID" | awk -F': ' '{print $2}')
-if [ -n "$PEER_ID" ]; then
-    bashio::log.info "NetBird Peer Registered Successfully: ${PEER_ID}"
-else
-    bashio::log.warning "NetBird Peer NOT registered yet!"
-fi
-
-# 顯示載入的 NetBird Routes
-bashio::log.info "NetBird Routes Loaded:"
-netbird route list || bashio::log.warning "Unable to fetch route list."
