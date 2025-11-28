@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 
 # 等待 HAOS network/system 完整啟動
-bashio::log.info "Waiting extra 60 seconds for HAOS to stabilize..."
+bashio::log.info "~~!! Waiting extra 60 seconds for HAOS to stabilize..."
 sleep 60
 
 bashio::log.info "NetBird Client – Jason Custom Startup Script"
@@ -16,7 +16,7 @@ for i in $(seq 1 30); do
         bashio::log.info "Network interface ready."
         break
     fi
-    sleep 1
+    sleep 5
 done
 
 # ===============================================================
@@ -28,7 +28,7 @@ for i in $(seq 1 30); do
         bashio::log.info "DNS OK."
         break
     fi
-    sleep 1
+    sleep 5
 done
 
 # ===============================================================
@@ -44,7 +44,7 @@ if [ -n "$MANAGEMENT_URL" ]; then
             bashio::log.info "NetBird management server reachable."
             break
         fi
-        sleep 1
+        sleep 5
     done
 fi
 
