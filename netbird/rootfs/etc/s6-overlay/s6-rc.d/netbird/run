@@ -156,8 +156,9 @@ NETBIRD_BIN_VERSION=$(netbird version)
 bashio::log.info "NetBird Binary Version: ${NETBIRD_BIN_VERSION}"
 
 # 顯示 NetBird 介面 wt0 IP（若已建立）
-WT0_IP=$(ip -o -4 addr show wt0 2>/dev/null | awk '{print $4}')
-bashio::log.info "NetBird wt0 IP: ${WT0_IP:-not ready yet}"
+# WT0_IP=$(ip -o -4 addr show wt0 2>/dev/null | awk '{print $4}')
+# bashio::log.info "NetBird wt0 IP: ${WT0_IP:-not ready yet}"
+# ERROR 會stop
 
 # 顯示 netbird up 的參數
 bashio::log.info "Starting NetBird Client..."
