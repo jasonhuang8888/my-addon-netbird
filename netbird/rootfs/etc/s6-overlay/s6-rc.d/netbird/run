@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 
 # 等待 HAOS network/system 完整啟動 v0.59.12
-bashio::log.info "~~!! fix-5 v0.59.12 Waiting extra 5 seconds for HAOS to stabilize..."
+bashio::log.info "~~!! back to >> v0.59.12 Waiting extra 5 seconds for HAOS to stabilize..."
 sleep 5
 
 bashio::log.info "NetBird Client – Jason Custom Startup Script"
@@ -166,18 +166,3 @@ bashio::log.info "netbird up " "${options[@]}"
 
 # 運行 netbird
 netbird up "${options[@]}"
-
-
-sleep 2
-
-# 檢查 Peer 註冊狀態
-PEER_ID=$(netbird status 2>/dev/null | grep "Peer ID" | awk -F': ' '{print $2}')
-if [ -n "$PEER_ID" ]; then
-    bashio::log.info "NetBird Peer Registered Successfully: ${PEER_ID}"
-else
-    bashio::log.warning "NetBird Peer NOT registered yet!"
-fi
-
-# 顯示載入的 NetBird Routes
-bashio::log.info "NetBird Routes Loaded:"
-netbird route list || bashio::log.warning "Unable to fetch route list."
