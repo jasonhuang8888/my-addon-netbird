@@ -1,9 +1,9 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 
-# 等待 HAOS network/system 完整啟動
-bashio::log.info "~~!! v0.59.12 Waiting extra 30 seconds for HAOS to stabilize..."
-sleep 30
+# 等待 HAOS network/system 完整啟動 v0.59.12
+bashio::log.info "~~!! fix-3 Waiting extra 10 seconds for HAOS to stabilize..."
+sleep 10
 
 bashio::log.info "NetBird Client – Jason Custom Startup Script"
 
@@ -147,8 +147,9 @@ ADDON_VERSION=$(bashio::addon.version)
 bashio::log.info "Add-on Version (config.yaml): ${ADDON_VERSION}"
 
 # 顯示 Docker image 名稱
-DOCKER_IMAGE=$(bashio::addon.image)
-bashio::log.info "Docker Image: ${DOCKER_IMAGE}"
+# DOCKER_IMAGE=$(bashio::addon.image)
+# bashio::log.info "Docker Image: ${DOCKER_IMAGE}"
+# ERROR 錯誤導致重啟 bashio::addon.image: command not found
 
 # 顯示 NetBird 二進位版本
 NETBIRD_BIN_VERSION=$(netbird version)
@@ -165,3 +166,17 @@ bashio::log.info "netbird up " "${options[@]}"
 # 運行 netbird
 netbird up "${options[@]}"
 
+
+sleep 2
+
+# 檢查 Peer 註冊狀態
+PEER_ID=$(netbird status 2>/dev/null | grep "Peer ID" | awk -F': ' '{print $2}')
+if [ -n "$PEER_ID" ]; then
+    bashio::log.info "NetBird Peer Registered Successfully: ${PEER_ID}"
+else
+    bashio::log.warning "NetBird Peer NOT registered yet!"
+fi
+
+# 顯示載入的 NetBird Routes
+bashio::log.info "NetBird Routes Loaded:"
+netbird route list || bashio::log.warning "Unable to fetch route list."
