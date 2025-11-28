@@ -2,8 +2,8 @@
 # shellcheck shell=bash
 
 # 等待 HAOS network/system 完整啟動
-bashio::log.info "~~!! Waiting extra 60 seconds for HAOS to stabilize..."
-sleep 60
+bashio::log.info "~~!! Waiting extra 30 seconds for HAOS to stabilize..."
+sleep 30
 
 bashio::log.info "NetBird Client – Jason Custom Startup Script"
 
