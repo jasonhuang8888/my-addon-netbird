@@ -1,10 +1,10 @@
 ---
 name: NetBird (Jason Custom)
-version: v0.60.2
+version: v0.60.3-rootless
 slug: netbird_jason_custom
-description: Custom NetBird addon using Docker tag v0.60.2 with startup fix
+description: Custom NetBird addon using Docker tag v0.60.3-rootless with startup fix
 url: https://github.com/jasonhuang8888/my-addon-netbird
-startup: application
+startup: services
 panel_icon: mdi:vpn
 init: false
 arch:
